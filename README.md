@@ -1,6 +1,7 @@
 # Bellabeat-Case-Study
 
 Author: Ashwin Subramanian
+
 Date: June 26th 2024
 
 ## Introduction
