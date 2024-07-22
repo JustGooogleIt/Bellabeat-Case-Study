@@ -22,4 +22,12 @@ The following three points are the questions that need to be answered by this an
 2. How could these trends apply to Bellabeat customers?
 3. How could these trends help influence Bellabeat marketing strategy?
 
+### Prepare
+
+The dataset used for analysis is from Kaggle ([https://www.kaggle.com/datasets/arashnic/fitbit?resource=download](url)). It contains 18 CSV files with data provided by thrirty three eligible FitBit users. The users consented to the submission of personal tracker data and the data set that they created is now publically available. There are however a couple of limitations. The data is vastly outdated with the dataset only being updated in February of 2024 but the data was originally being collected back in 2016. Additionally data was only being collected for a grand total of 31 days from the dates of 04/12/2016 to 05/12/2016. Moreover the sample size is extremely small as only 33 respondents replied to the survey and there is no gender description making it harder for us to apply our insights solely to Bellabeat's female target market reducing the relevance of the data. 
+
+### Process
+
+Initially I started by cleaning the data. The first step that was taken was to merge all of the hourly activities into a single spreadsheet through excel in order to more easily work with the data. Following that the datasets were loaded into the Microsoft SQL Server. During this process there were certain hiccups such as datatypes being loaded incorrectly. Afterwards I loaded the dataset the Microsoft SQL Servers where again I faced another issue of the values loading as strings instead of FLoats or Integers. Fixing that I also converted ActivityDate into date format using datetime. A detailed process of the data cleaning procedure can be found in the CleaningFitbase File.
+
 
