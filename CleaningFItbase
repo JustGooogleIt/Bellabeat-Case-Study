@@ -1,0 +1,102 @@
+/*Cleaning process: I Merged different csv files of daily Activitivities using Excel power query.
+I Then Uploaded the CSV files and excell files to Microsoft SQL Serverr. Some values were imported as strings instead of floats*/
+
+--I used the following code to cast strings to float. I Started by creating a table where I can insert the cleaned values
+
+IF EXISTS(SELECT *                    --I always put this code after creating the table to drop it in case I run the code again
+			FROM fitabase.dbo.dailyActivityCleaned)
+
+DROP TABLE fitabase.dbo.dailyActivityCleaned
+
+CREATE TABLE fitabase.dbo.dailyActivityCleaned
+(Id FLOAT, ActivityDate DATETIME2(7), TotalSteps FLOAT, TotalDistance FLOAT, LoggedActiveDistance FLOAT,VeryActiveDistance FLOAT, ModeratelyActiveDistance FLOAT, 
+	LightlyActiveDistance FLOAT, SedentaryActiveDistance FLOAT, VeryActiveMinutes FLOAT, FairlyActiveMinutes FLOAT, LightlyActiveMinutes FLOAT, SedentaryActiveMinutes FLOAT,
+	Calories FLOAT)
+
+INSERT INTO fitabase.dbo.dailyActivityCleaned
+	(Id, ActivityDate, TotalSteps, TotalDistance, LoggedActiveDistance,VeryActiveDistance, ModeratelyActiveDistance, 
+	LightlyActiveDistance, SedentaryActiveDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes, SedentaryActiveMinutes,
+	Calories)
+
+SELECT 
+	Id,
+	ActivityDate,
+	CAST(TotalSteps AS FLOAT) AS TotalSteps,
+	CAST(TotalDistance AS FLOAT) AS TotalDistance,
+	CAST(LoggedActivitiesDistance AS FLOAT) AS LoggedActiveDistance,
+	CAST(VeryActiveDistance AS FLOAT) AS VeryActiveDistance,
+	CAST(ModeratelyActiveDistance AS FLOAT) AS ModeratelyActiveDistance,
+	CAST(LightActiveDistance AS FLOAT) AS LightActiveDistance,
+	CAST(SedentaryActiveDistance AS FLOAT) AS SedentaryActiveDistance,
+	CAST(VeryActiveMinutes AS FLOAT) AS VeryActiveMinutes,
+	CAST(FairlyActiveMinutes AS FLOAT) AS FairlyActiveMinutes,
+	CAST(LightlyActiveMinutes AS FLOAT) AS LightlyActiveMinutes,
+	CAST(SedentaryMinutes AS FLOAT) AS SedentaryActiveMinutes,
+	CAST(Calories AS FLOAT) AS Calories
+
+FROM fitabase.dbo.dailyActivity
+
+
+---I created another table showing the number of days each user tracked his/her physical activity
+
+IF EXISTS(SELECT *                         
+	FROM fitabase.dbo.trackedDays)
+
+DROP TABLE fitabase.dbo.trackedDays
+
+CREATE TABLE fitabase.dbo.trackedDays
+	(Id FLOAT, days_activity_recorded int)
+
+INSERT INTO fitabase.dbo.trackedDays
+(Id, days_activity_recorded)
+
+SELECT
+	Id,
+	COUNT(ActivityDate) OVER (PARTITION BY Id) AS days_activity_recorded
+
+FROM fitabase.dbo.dailyActivity
+
+ORDER BY
+	days_activity_recorded DESC
+
+
+/*Created 2 new tables summarizing sleep monitoring data.
+I created these tables so that I can join them and use them in the analysis*/
+
+IF EXISTS(SELECT *
+	FROM fitabase.dbo.summarySleepDay)
+
+DROP TABLE fitabase.dbo.summarySleepDay
+
+CREATE TABLE fitabase.dbo.summarySleepDay                         --Table 1
+	(Id FLOAT, TotalMinutesInBed INT, TotalMinutesAsleep INT)
+
+INSERT INTO fitabase.dbo.summarySleepDay
+(Id, TotalMinutesInBed, TotalMinutesAsleep)
+SELECT
+	Id,
+	SUM(TotalTimeInBed) AS TotalMinutesInBed,
+	SUM(TotalMinutesAsleep) AS TotalMinutesAsleep	
+FROM 
+	fitabase.dbo.sleepDay
+GROUP BY
+	Id
+
+
+IF EXISTS(SELECT *
+	FROM fitabase.dbo.summaryRestless)
+
+DROP TABLE fitabase.dbo.summaryRestless
+
+CREATE TABLE fitabase.dbo.summaryRestless     --Table 2
+	(Id FLOAT, TotalMinutesRestless INT)
+
+INSERT INTO fitabase.dbo.summaryRestless
+(Id, TotalMinutesRestless)
+
+SELECT 
+	DISTINCT Id, 
+	COUNT(value) OVER (PARTITION BY Id) AS TotalMinuteRestless
+FROM fitabase.dbo.minuteSleep_state
+WHERE
+	value = 2 
