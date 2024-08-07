@@ -35,7 +35,9 @@ Initially I started by cleaning the data. The first step that was taken was to m
 
 The data analysis revealed that most respondents consistently used health tracking devices, averaging 20 hours and 18 minutes per day over a span of 29 days (refer to Figure 1). 
 
+
 <img width="756" alt="Screen Shot 2024-08-06 at 10 50 58 PM" src="https://github.com/user-attachments/assets/2e9cf616-3008-46b2-9936-455e9e6347f7">
+
 
 All respondents tracked various health metrics, including calories, steps, physical activity, and the duration of these activities. Notably, 72% of respondents monitored their sleeping patterns, 42% tracked their heart rate, and only 24% measured their weight. Despite this tracking, respondents spent a significant amount of time inactive, averaging 8 hours and 50 minutes per day. 
 
@@ -48,9 +50,12 @@ The analysis also showed that respondents were most active in the afternoon, fro
 
 To calculate the total intensity, the values for each specific hour are summed across all respondents. This sum is then divided by the number of respondents to obtain the average intensity for all participants at each particular hour. A higher average intensity indicates that respondents were more physically active during that time. For detailed information, refer to Figure 2.
 
+
 <img width="584" alt="Screen Shot 2024-08-06 at 11 04 06 PM" src="https://github.com/user-attachments/assets/06f5b4a7-3c93-4386-a8a2-464611184e1e">
 
+
 On average, they recorded 7,600 steps per day, which falls short of the recommended daily steps. Refer to Figure 3 for more information.
+
 
 <img width="804" alt="Screen Shot 2024-08-06 at 10 51 44 PM" src="https://github.com/user-attachments/assets/64694d22-ffdc-4205-963c-0773573b2f7a">
 
